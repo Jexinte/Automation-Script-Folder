@@ -15,9 +15,10 @@ enum FolderName {
     
     const SRC = [
         "src" => [
-"Repository","Controller","Enumeration","Exceptions","Manager","Entity","Util"
+"Repository","Controller","Enumeration","Exceptions","Manager","Entity","Util","Service"
         ]
         ];
+    
     
     const TEMPLATES = [
         "templates" => ['admin']
