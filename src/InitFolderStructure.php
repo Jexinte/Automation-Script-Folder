@@ -40,6 +40,7 @@ class InitFolderStructure extends Exception
                 if ($noErrors) {
                     switch ($userChoice) {
                         case true:
+                            $this->projectName = str_replace(" ","_",$this->projectName);
                             $this->parentFolderInitializationSucceed = true;
 
                             if ($this->parentFolderInitializationSucceed) {
@@ -76,9 +77,9 @@ class InitFolderStructure extends Exception
 
     public function handleBadInputFromInitializationFolderProcess()
     {
-        preg_match_all("/[^a-z]/", $this->projectName, $matches);
+        preg_match_all("/[a-z\s]{1,}/", $this->projectName, $matches);
 
-        if (empty(current($matches))) {
+        if (!empty(current($matches))) {
             return true;
         }
         throw new Exception(self::BAD_INPUT_ERROR);
