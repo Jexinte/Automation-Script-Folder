@@ -91,7 +91,7 @@ class InitFolderStructure extends Exception
         }
     }
 
-    public function createSrcFolderAndHisFolders()
+    public function createParentFoldersOnProjectFolder()
     {
         if ($this->parentFolderInitializationSucceed) {
             $arrays = [FolderName::DIAGRAMS, FolderName::SRC, FolderName::PUBLIC, FolderName::ASSETS, FolderName::TEMPLATES];
@@ -158,7 +158,7 @@ $obj = new InitFolderStructure();
 try {
     $obj->initializeAProjectName();
     $obj->createConfigFolder();
-    $obj->createSrcFolderAndHisFolders();
+    $obj->createParentFoldersOnProjectFolder();
 } catch (Exception $e) {
     echo $e->getMessage();
 }
