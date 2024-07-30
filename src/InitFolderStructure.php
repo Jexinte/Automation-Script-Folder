@@ -2,6 +2,7 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
+use Exception;
 use Enumeration\FolderName;
 
 class InitFolderStructure extends Exception
@@ -40,7 +41,7 @@ class InitFolderStructure extends Exception
                 if ($noErrors) {
                     switch ($userChoice) {
                         case true:
-                            $this->projectName = str_replace(" ","_",$this->projectName);
+                            $this->projectName = str_replace(" ", "_", $this->projectName);
                             $this->parentFolderInitializationSucceed = true;
 
                             if ($this->parentFolderInitializationSucceed) {
@@ -87,48 +88,54 @@ class InitFolderStructure extends Exception
 
     public function createConfigFolder()
     {
-        if ($this->parentFolderInitializationSucceed) {
-            mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "/config");
+        mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\" . FolderName::CONFIG);
+    }
+
+    public function createPublicFolderAndSubFolders()
+    {
+        mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\" . FolderName::PUBLIC);
+        mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\" . FolderName::PUBLIC . "\\" . FolderName::ASSETS);
+        $this->createAssetsSubFolders();
+    }
+
+    public function createIndexFileInPublicFolder()
+    {
+        $filename = "index.php";
+
+        $file = fopen($this->folderWhereTheProjectIsGonnaBeCreated . "\\" . FolderName::PUBLIC . "\\$filename", "w");
+
+        fclose($file);
+    }
+
+    public function createAssetsSubFolders()
+    {
+        $subFolders = [FolderName::CSS, FolderName::IMAGES, FolderName::JS, FolderName::WIREFRAMES];
+
+        foreach ($subFolders as $subFolder) {
+            mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\" . FolderName::PUBLIC . "\\" . FolderName::ASSETS . "\\" . $subFolder);
         }
     }
 
-    public function creatingParentSubFoldersOnProjectFolder()
+    public function createTemplateFolderAndSubFolder()
     {
+        mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\" . FolderName::TEMPLATES);
+        mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\" . FolderName::TEMPLATES . "\\" . FolderName::TEMPLATES_ADMIN);
+    }
+
+    public function createFolderAndFiles()
+    {
+        $arrays = [FolderName::DIAGRAMS, FolderName::SRC];
+
         if ($this->parentFolderInitializationSucceed) {
-            $arrays = [FolderName::DIAGRAMS, FolderName::SRC, FolderName::PUBLIC, FolderName::ASSETS, FolderName::TEMPLATES];
+            $this->createConfigFolder();
+            $this->createPublicFolderAndSubFolders();
+            $this->createIndexFileInPublicFolder();
+            $this->createTemplateFolderAndSubFolder();
 
             foreach ($arrays as $arr) {
                 foreach ($arr as $parentFolderKey => $subFolder) {
-                    switch ($parentFolderKey) {
-                        case "diagrams":
-                            mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\diagrams");
-                            $this->createSubFolders($subFolder, $parentFolderKey);
-                            break;
-
-                        case "src":
-                            mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\src");
-                            $this->createSubFolders($subFolder, $parentFolderKey);
-                            break;
-
-                        case "templates":
-                            mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\templates");
-                            $this->createSubFolders($subFolder, $parentFolderKey);
-                            break;
-                        case "public":
-                            mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\public");
-                            $filename = "index.php";
-                            $file = fopen($this->folderWhereTheProjectIsGonnaBeCreated . "\\public\\" . $filename, 'w');
-                            fclose($file);
-                            $this->createSubFolders($subFolder, $parentFolderKey);
-                            break;
-                        case "assets":
-                            if (!is_dir($this->folderWhereTheProjectIsGonnaBeCreated . "\\public\\assets")) {
-                                mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\public\\assets");
-                            }
-
-                            $this->createSubFolders($subFolder, $parentFolderKey);
-                            break;
-                    }
+                    mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\$parentFolderKey");
+                    $this->createSubFolders($subFolder, $parentFolderKey);
                 }
             }
         }
@@ -138,17 +145,7 @@ class InitFolderStructure extends Exception
     {
         if (is_array($subFolderValues)) {
             foreach ($subFolderValues as $subFolderValue) {
-                switch (true) {
-                    case $keyOfParentFolderOfSubFolder == "assets":
-                        mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\public\\assets\\$subFolderValue");
-                        break;
-                    case $keyOfParentFolderOfSubFolder == "templates":
-                        mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\templates\\$subFolderValue");
-                        break;
-                    case is_dir($this->folderWhereTheProjectIsGonnaBeCreated . "\\$keyOfParentFolderOfSubFolder"):
-                        mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\$keyOfParentFolderOfSubFolder\\$subFolderValue");
-                        break;
-                }
+                mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\$keyOfParentFolderOfSubFolder\\$subFolderValue");
             }
         }
     }
@@ -158,10 +155,7 @@ $obj = new InitFolderStructure();
 
 try {
     $obj->initialisationOfTheFolderStructureBuiltAutomation();
-    $obj->createConfigFolder();
-    $obj->creatingParentSubFoldersOnProjectFolder();
+    $obj->createFolderAndFiles();
 } catch (Exception $e) {
     echo $e->getMessage();
 }
-
-

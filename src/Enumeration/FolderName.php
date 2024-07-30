@@ -4,7 +4,15 @@ namespace Enumeration;
 
 enum FolderName {
 
-    const CONFIG_FOLDER = "config";
+    const CONFIG = "config";
+    const PUBLIC = "public";
+    const TEMPLATES = "templates";
+    const TEMPLATES_ADMIN = "admin";
+    const ASSETS = "assets";
+    const CSS = "css";
+    const IMAGES = "images";
+    const JS = "js";
+    const WIREFRAMES = "wireframes";
     const DIAGRAMS =  [
     "diagrams" => [
          "UseCases",
@@ -19,21 +27,5 @@ enum FolderName {
         ]
         ];
     
-    
-    const TEMPLATES = [
-        "templates" => ['admin']
-    ];
- 
-    const PUBLIC = [
-    "public" => ["assets"]
-    ];
-
-    const ASSETS = [
-        "assets" => [
-            "css","images","js","wireframes"
-        ]
-    ]
-    ;
-
 
 }
