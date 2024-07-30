@@ -24,7 +24,7 @@ class InitFolderStructure extends Exception
     const BAD_INPUT_ERROR_MESSAGE =
         PHP_EOL . "Please, respect the following criteria for the name of your project :" . PHP_EOL . PHP_EOL . "- All letters on lowercase" . PHP_EOL . "- No spaces" . PHP_EOL . "- No accents" . PHP_EOL . PHP_EOL . "Try again : ";
 
-    public function initializeAProjectName()
+    public function initialisationOfTheFolderStructureBuiltAutomation()
     {
         echo self::RULES_MESSAGES;
 
@@ -34,7 +34,7 @@ class InitFolderStructure extends Exception
             $this->projectName = trim(fgets($streamOfUserTypingTheNameOfTheProject));
 
             try {
-                $noErrors = $this->handleBadInputFromInitializationFolderProcess();
+                $noErrors = $this->handleBadInputFromInitialisationOfTheFolderStructureBuiltAutomation();
                 $userChoice = $this->isUserConfirmNameOfTheProject();
 
                 if ($noErrors) {
@@ -75,7 +75,7 @@ class InitFolderStructure extends Exception
         return $userChoice == 'y' ? self::CONFIRM_OF_PROCEDURE_BY_USER : self::DENIED_OF_PROCEDURE_BY_USER;
     }
 
-    public function handleBadInputFromInitializationFolderProcess()
+    public function handleBadInputFromInitialisationOfTheFolderStructureBuiltAutomation()
     {
         preg_match_all("/[a-z\s]{1,}/", $this->projectName, $matches);
 
@@ -92,7 +92,7 @@ class InitFolderStructure extends Exception
         }
     }
 
-    public function createParentFoldersOnProjectFolder()
+    public function creatingParentSubFoldersOnProjectFolder()
     {
         if ($this->parentFolderInitializationSucceed) {
             $arrays = [FolderName::DIAGRAMS, FolderName::SRC, FolderName::PUBLIC, FolderName::ASSETS, FolderName::TEMPLATES];
@@ -157,9 +157,9 @@ class InitFolderStructure extends Exception
 $obj = new InitFolderStructure();
 
 try {
-    $obj->initializeAProjectName();
+    $obj->initialisationOfTheFolderStructureBuiltAutomation();
     $obj->createConfigFolder();
-    $obj->createParentFoldersOnProjectFolder();
+    $obj->creatingParentSubFoldersOnProjectFolder();
 } catch (Exception $e) {
     echo $e->getMessage();
 }
