@@ -11,22 +11,22 @@ class InitFolderStructure extends Exception
 
     public string $folderWhereTheProjectIsGonnaBeCreated = "C:\\xampp\\htdocs\\";
 
-    const WELCOME_MESSAGE = PHP_EOL . "Please enter the name of your project, spaces will be replaced by underscores and accents of any kind are not allowed, only lowercase letters will be accepted : " . PHP_EOL . PHP_EOL;
+    const RULES_MESSAGES = PHP_EOL . "Please enter the name of your project, spaces will be replaced by underscores and accents of any kind are not allowed, only lowercase letters will be accepted : " . PHP_EOL . PHP_EOL;
 
-    const CONFIRM_MESSAGE = PHP_EOL . "Are you sure about the project name with (y/n) : ";
+    const CONFIRMATION_OF_USER_FOR_THE_NAME_OF_THE_PROJECT_MESSAGE = PHP_EOL . "Are you sure about the project name with (y/n) : ";
 
     const CONFIRM_OF_PROCEDURE_BY_USER = true;
 
     const DENIED_OF_PROCEDURE_BY_USER = false;
 
-    const PARENT_FOLDER_BUILT = PHP_EOL . "Everything is all set ! Happy coding !" . PHP_EOL;
+    const SET_UP_FINISH_MESSAGE = PHP_EOL . "Everything is all set ! Happy coding !" . PHP_EOL;
 
-    const BAD_INPUT_ERROR =
+    const BAD_INPUT_ERROR_MESSAGE =
         PHP_EOL . "Please, respect the following criteria for the name of your project :" . PHP_EOL . PHP_EOL . "- All letters on lowercase" . PHP_EOL . "- No spaces" . PHP_EOL . "- No accents" . PHP_EOL . PHP_EOL . "Try again : ";
 
     public function initializeAProjectName()
     {
-        echo self::WELCOME_MESSAGE;
+        echo self::RULES_MESSAGES;
 
         while ($this->parentFolderInitializationSucceed == false) {
             $streamOfUserTypingTheNameOfTheProject = fopen("php://stdin", "r");
@@ -46,13 +46,13 @@ class InitFolderStructure extends Exception
                             if ($this->parentFolderInitializationSucceed) {
                                 $this->folderWhereTheProjectIsGonnaBeCreated .= $this->projectName;
                                 mkdir($this->folderWhereTheProjectIsGonnaBeCreated);
-                                echo self::PARENT_FOLDER_BUILT;
+                                echo self::SET_UP_FINISH_MESSAGE;
                                 fclose($streamOfUserTypingTheNameOfTheProject);
                             }
                             break;
 
                         default:
-                            echo self::WELCOME_MESSAGE;
+                            echo self::RULES_MESSAGES;
                             $this->parentFolderInitializationSucceed = false;
                             break;
                     }
@@ -65,7 +65,7 @@ class InitFolderStructure extends Exception
 
     public function isUserConfirmNameOfTheProject()
     {
-        echo self::CONFIRM_MESSAGE;
+        echo self::CONFIRMATION_OF_USER_FOR_THE_NAME_OF_THE_PROJECT_MESSAGE;
 
         $streamOfUserConfirmingHisChoice = fopen("php://stdin", "r");
         $userChoice = trim(fgets($streamOfUserConfirmingHisChoice));
@@ -82,7 +82,7 @@ class InitFolderStructure extends Exception
         if (!empty(current($matches))) {
             return true;
         }
-        throw new Exception(self::BAD_INPUT_ERROR);
+        throw new Exception(self::BAD_INPUT_ERROR_MESSAGE);
     }
 
     public function createConfigFolder()
