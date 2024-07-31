@@ -23,7 +23,7 @@ enum FolderName {
     
     const SRC = [
         "src" => [
-"Repository","Controller","Enumeration","Exceptions","Manager","Entity","Util","Service"
+"Repository","Controller","Enumeration","Exceptions","Manager","Entity","Util","Service","Router"
         ]
         ];
     
