@@ -31,10 +31,9 @@ class InitFolderStructure extends Exception
 
                 if ($noErrors) {
                     switch ($userChoice) {
-                        case true:
+                        case MESSAGE::CONFIRM_OF_PROCEDURE_BY_USER:
                             $this->projectName = str_replace(" ", "_", $this->projectName);
                             $this->parentFolderInitializationSucceed = true;
-
                             if ($this->parentFolderInitializationSucceed) {
                                 $this->folderWhereTheProjectIsGonnaBeCreated .= $this->projectName;
                                 mkdir($this->folderWhereTheProjectIsGonnaBeCreated);
@@ -54,6 +53,17 @@ class InitFolderStructure extends Exception
             }
         }
     }
+
+     public function isFolderNameAlreadyExist(){
+         $foldersInHtdocs = scandir($this->folderWhereTheProjectIsGonnaBeCreated);
+
+         foreach($foldersInHtdocs as $folder){
+             if($folder == $this->projectName){
+                 return true;
+             }
+         }
+         return null;
+     }
 
     public function isUserConfirmNameOfTheProject()
     {
@@ -118,7 +128,7 @@ class InitFolderStructure extends Exception
         $arrays = [FolderName::DIAGRAMS, FolderName::SRC];
 
         if ($this->parentFolderInitializationSucceed) {
-            
+
             $this->createConfigFolder();
             $this->createPublicFolderAndSubFolders();
             $this->createIndexFileInPublicFolder();
