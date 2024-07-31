@@ -110,6 +110,17 @@ class InitFolderStructure extends Exception
         fclose($file);
     }
 
+    public function createComposerJsonFileInProjectFolder()
+    {
+        $filename = "composer.json";
+
+        $file = fopen($this->folderWhereTheProjectIsGonnaBeCreated . "\\$filename", "w");
+
+        fwrite($file,"{\n}");
+
+        fclose($file);
+    }
+
     public function createAssetsSubFolders()
     {
         $subFolders = [FolderName::CSS, FolderName::IMAGES, FolderName::JS, FolderName::WIREFRAMES];
@@ -134,6 +145,7 @@ class InitFolderStructure extends Exception
             $this->createPublicFolderAndSubFolders();
             $this->createIndexFileInPublicFolder();
             $this->createTemplateFolderAndSubFolder();
+            $this->createComposerJsonFileInProjectFolder();
 
             foreach ($arrays as $arr) {
                 foreach ($arr as $parentFolderKey => $subFolder) {
