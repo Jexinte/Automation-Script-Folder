@@ -2,10 +2,9 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
-
-
 use Enumeration\FolderName;
 use Enumeration\Message;
+use Enumeration\User;
 
 class InitFolderStructure extends Exception
 {
@@ -13,8 +12,6 @@ class InitFolderStructure extends Exception
     public bool $parentFolderInitializationSucceed = false;
 
     public string $folderWhereTheProjectIsGonnaBeCreated = "C:\\xampp\\htdocs\\";
-
-    
 
     public function initialisationOfTheFolderStructureBuiltAutomation()
     {
@@ -31,7 +28,7 @@ class InitFolderStructure extends Exception
 
                 if ($noErrors) {
                     switch ($userChoice) {
-                        case MESSAGE::CONFIRM_OF_PROCEDURE_BY_USER:
+                        case USER::CONFIRM_THE_PROCEDURE:
                             $this->projectName = str_replace(" ", "_", $this->projectName);
                             $this->parentFolderInitializationSucceed = true;
                             if ($this->parentFolderInitializationSucceed) {
@@ -54,37 +51,42 @@ class InitFolderStructure extends Exception
         }
     }
 
-     public function isFolderNameAlreadyExist(){
-         $foldersInHtdocs = scandir($this->folderWhereTheProjectIsGonnaBeCreated);
+    public function isFolderNameAlreadyExist()
+    {
+        $foldersInHtdocs = scandir($this->folderWhereTheProjectIsGonnaBeCreated);
 
-         foreach($foldersInHtdocs as $folder){
-             if($folder == $this->projectName){
-                 return true;
-             }
-         }
-         return null;
-     }
+        foreach ($foldersInHtdocs as $folder) {
+            if ($folder == $this->projectName) {
+                return true;
+            }
+        }
+        return null;
+    }
 
     public function isUserConfirmNameOfTheProject()
     {
-        echo Message::CONFIRMATION_OF_USER_FOR_THE_NAME_OF_THE_PROJECT;
+        echo Message::ASKING_CONFIRMATION_OF_USER_FOR_THE_NAME_OF_THE_PROJECT;
 
         $streamOfUserConfirmingHisChoice = fopen("php://stdin", "r");
         $userChoice = trim(fgets($streamOfUserConfirmingHisChoice));
 
         fclose($streamOfUserConfirmingHisChoice);
 
-        return $userChoice == 'y' ? Message::CONFIRM_OF_PROCEDURE_BY_USER : Message::DENIED_OF_PROCEDURE_BY_USER;
+        return $userChoice == 'y' ? User::CONFIRM_THE_PROCEDURE : User::DENIED_THE_PROCEDURE;
     }
 
     public function handleBadInputFromInitialisationOfTheFolderStructureBuiltAutomation()
     {
         preg_match_all("/[a-z\s]{1,}/", $this->projectName, $matches);
-
-        if (!empty(current($matches))) {
-            return true;
+        switch (true) {
+            case $this->isFolderNameAlreadyExist():
+                throw new Exception(Message::FOLDER_NAME_NOT_AVAILABLE);
+            default:
+                if (!empty(current($matches))) {
+                    return true;
+                }
+                throw new Exception(Message::BAD_INPUT_ERROR);
         }
-        throw new Exception(Message::BAD_INPUT_ERROR);
     }
 
     public function createConfigFolder()
@@ -128,7 +130,6 @@ class InitFolderStructure extends Exception
         $arrays = [FolderName::DIAGRAMS, FolderName::SRC];
 
         if ($this->parentFolderInitializationSucceed) {
-
             $this->createConfigFolder();
             $this->createPublicFolderAndSubFolders();
             $this->createIndexFileInPublicFolder();
