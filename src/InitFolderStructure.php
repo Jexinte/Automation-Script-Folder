@@ -29,7 +29,7 @@ class InitFolderStructure extends Exception
                 if ($noErrors) {
                     switch ($userChoice) {
                         case USER::CONFIRM_THE_PROCEDURE:
-                            $this->projectName = str_replace(" ", "_", $this->projectName);
+                            $this->projectName = str_replace(" ", "-", $this->projectName);
                             $this->parentFolderInitializationSucceed = true;
                             if ($this->parentFolderInitializationSucceed) {
                                 $this->folderWhereTheProjectIsGonnaBeCreated .= $this->projectName;
