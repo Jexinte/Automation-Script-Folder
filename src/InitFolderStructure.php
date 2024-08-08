@@ -13,7 +13,7 @@ class InitFolderStructure extends Exception
 
     public string $folderWhereTheProjectIsGonnaBeCreated = "C:\\xampp\\htdocs\\";
 
-    public function initialisationOfTheFolderStructureBuiltAutomation()
+    public function initialisationOfTheFolderStructureBuiltAutomation() : void
     {
         echo Message::RULES;
 
@@ -51,7 +51,7 @@ class InitFolderStructure extends Exception
         }
     }
 
-    public function isFolderNameAlreadyExist()
+    public function isFolderNameAlreadyExist(): ?bool
     {
         $foldersInHtdocs = scandir($this->folderWhereTheProjectIsGonnaBeCreated);
 
@@ -63,7 +63,7 @@ class InitFolderStructure extends Exception
         return null;
     }
 
-    public function isUserConfirmNameOfTheProject()
+    public function isUserConfirmNameOfTheProject(): bool
     {
         echo Message::ASKING_CONFIRMATION_OF_USER_FOR_THE_NAME_OF_THE_PROJECT;
 
@@ -75,7 +75,7 @@ class InitFolderStructure extends Exception
         return $userChoice == 'y' ? User::CONFIRM_THE_PROCEDURE : User::DENIED_THE_PROCEDURE;
     }
 
-    public function handleBadInputFromInitialisationOfTheFolderStructureBuiltAutomation()
+    public function handleBadInputFromInitialisationOfTheFolderStructureBuiltAutomation(): bool|Exception
     {
         preg_match_all("/[a-z\s]{1,}/", $this->projectName, $matches);
         switch (true) {
@@ -89,12 +89,12 @@ class InitFolderStructure extends Exception
         }
     }
 
-    public function createConfigFolder()
+    public function createConfigFolder(): void
     {
         mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\" . FolderName::CONFIG);
     }
 
-    public function createRouterFolderAndFiles()
+    public function createRouterFolderAndFiles(): void
     {
         mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\" . FolderName::ROUTER);
         $filename = "Router.php";
@@ -163,9 +163,11 @@ class InitFolderStructure extends Exception
         }
         PHP;
         fwrite($file,$code);
+        fclose($file);
     }
 
-    public function createUtilFolderAndFiles(){
+    public function createUtilFolderAndFiles(): void
+    {
      
         mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\" . FolderName::UTIL);
         $filename = "RequestObject.php";
@@ -212,9 +214,11 @@ class InitFolderStructure extends Exception
 
         PHP;
         fwrite($file,$code);
+        fclose($file);
     }
 
-    public function createManagerFolderAndFiles(){
+    public function createManagerFolderAndFiles(): void
+    {
         mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\" . FolderName::MANAGER);
         $filename = "Session.php";
         
@@ -263,9 +267,11 @@ class InitFolderStructure extends Exception
             }
         PHP;
         fwrite($file,$code);
+        fclose($file);
     }
 
-    public function createExceptionsFolderAndFiles(){
+    public function createExceptionsFolderAndFiles(): void
+    {
         mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\" . FolderName::EXCEPTIONS);
         $filename = "ValidationException.php";
         
@@ -301,15 +307,16 @@ class InitFolderStructure extends Exception
         }
         PHP;
         fwrite($file,$code);
+        fclose($file);
     }
-    public function createPublicFolderAndSubFolders()
+    public function createPublicFolderAndSubFolders(): void
     {
         mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\" . FolderName::PUBLIC);
         mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\" . FolderName::PUBLIC . "\\" . FolderName::ASSETS);
         $this->createAssetsSubFolders();
     }
 
-    public function createIndexFileInPublicFolder()
+    public function createIndexFileInPublicFolder(): void
     {
         $filename = "index.php";
 
@@ -318,7 +325,7 @@ class InitFolderStructure extends Exception
         fclose($file);
     }
 
-    public function createComposerJsonFileInProjectFolder()
+    public function createComposerJsonFileInProjectFolder(): void
     {
         $filename = "composer.json";
 
@@ -329,7 +336,7 @@ class InitFolderStructure extends Exception
         fclose($file);
     }
 
-    public function createAssetsSubFolders()
+    public function createAssetsSubFolders(): void
     {
         $subFolders = [FolderName::CSS, FolderName::IMAGES, FolderName::JS, FolderName::WIREFRAMES];
 
@@ -338,13 +345,13 @@ class InitFolderStructure extends Exception
         }
     }
 
-    public function createTemplateFolderAndSubFolder()
+    public function createTemplateFolderAndSubFolder(): void
     {
         mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\" . FolderName::TEMPLATES);
         mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\" . FolderName::TEMPLATES . "\\" . FolderName::TEMPLATES_ADMIN);
     }
 
-    public function createFolderAndFiles()
+    public function createFolderAndFiles(): void
     {
         $arrays = [FolderName::DIAGRAMS, FolderName::SRC];
 
@@ -369,7 +376,7 @@ class InitFolderStructure extends Exception
         }
     }
 
-    public function createSubFolders($subFolderValues, $keyOfParentFolderOfSubFolder)
+    public function createSubFolders($subFolderValues, $keyOfParentFolderOfSubFolder): void
     {
         if (is_array($subFolderValues)) {
             foreach ($subFolderValues as $subFolderValue) {
