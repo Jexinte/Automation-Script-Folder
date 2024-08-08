@@ -227,11 +227,7 @@ class InitFolderStructure extends Exception
             class Session
             {
 
-                /**
-                 * Summary of startSession
-                 *
-                 * @return void
-                 */
+             
                 public function startSession(): void
                 {
 
@@ -241,11 +237,7 @@ class InitFolderStructure extends Exception
 
                 }
 
-                /**
-                 * Summary of destroySession
-                 *
-                 * @return void
-                 */
+             
                 public function destroySession(): void
                 {
 
@@ -257,24 +249,13 @@ class InitFolderStructure extends Exception
 
 
 
-                /**
-                 * Summary of initializeKeyAndValue
-                 *
-                 * @param string          $key
-                 * @param string|null|int $value
-                 *
-                 * @return void
-                 */
+               
                 public function initializeKeyAndValue(string $key, string|null|int $value): void
                 {
                     $_SESSION[$key] = $value;
                 }
 
-                /**
-                 * Summary of getSessionData
-                 *
-                 * @return array
-                 */
+                
                 public function getSessionData(): array
                 {
                     return $_SESSION;
@@ -330,7 +311,7 @@ class InitFolderStructure extends Exception
         $arrays = [FolderName::DIAGRAMS, FolderName::SRC];
 
         if ($this->parentFolderInitializationSucceed) {
-            
+
             $this->createConfigFolder();
             $this->createPublicFolderAndSubFolders();
             $this->createIndexFileInPublicFolder();

@@ -17,6 +17,7 @@ enum FolderName {
     const ROUTER = "Router";
     const MANAGER = "Manager";
     const UTIL = "Util";
+    const EXCEPTIONS = "Exceptions";
 
     const DIAGRAMS =  [
     "diagrams" => [
@@ -27,7 +28,7 @@ enum FolderName {
     ];
     
     const SRC = [
-        "src" => ["Repository","Controller","Enumeration","Exceptions","Entity","Service"]
+        "src" => ["Repository","Controller","Enumeration","Entity","Service"]
         ];
     
 
