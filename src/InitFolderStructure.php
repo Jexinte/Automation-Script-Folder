@@ -264,6 +264,44 @@ class InitFolderStructure extends Exception
         PHP;
         fwrite($file,$code);
     }
+
+    public function createExceptionsFolderAndFiles(){
+        mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\" . FolderName::EXCEPTIONS);
+        $filename = "ValidationException.php";
+        
+        $file = fopen($this->folderWhereTheProjectIsGonnaBeCreated . "\\" . FolderName::EXCEPTIONS . "\\$filename", "w");
+
+        $code = <<< 'PHP'
+        <?php
+
+        namespace Exceptions;
+
+        use Exception;
+
+
+        class ValidationException extends Exception
+        {
+            protected array $errors = [];
+        
+
+        
+            public function setTypeAndValueOfException(
+                string $key, 
+                string $message
+            ): ?ValidationException {
+                $this->errors[$key] = $message;
+                return $this;
+            }
+
+        
+            public function getErrors() : array
+            {
+                return $this->errors;
+            }
+        }
+        PHP;
+        fwrite($file,$code);
+    }
     public function createPublicFolderAndSubFolders()
     {
         mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\" . FolderName::PUBLIC);
@@ -320,6 +358,7 @@ class InitFolderStructure extends Exception
             $this->createRouterFolderAndFiles();
             $this->createUtilFolderAndFiles();
             $this->createManagerFolderAndFiles();
+            $this->createExceptionsFolderAndFiles();
 
             foreach ($arrays as $arr) {
                 foreach ($arr as $parentFolderKey => $subFolder) {
