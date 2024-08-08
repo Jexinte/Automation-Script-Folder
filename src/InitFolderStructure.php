@@ -94,6 +94,77 @@ class InitFolderStructure extends Exception
         mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\" . FolderName::CONFIG);
     }
 
+    public function createRouterFolderAndFiles()
+    {
+        mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\" . FolderName::ROUTER);
+        $filename = "Router.php";
+        
+        $file = fopen($this->folderWhereTheProjectIsGonnaBeCreated . "\\" . FolderName::ROUTER . "\\$filename", "w");
+
+        $code = <<<'PHP'
+        <?php
+        
+        namespace Router;
+        
+        use Util\RequestObject;
+        
+        class Router{
+        
+            public function __construct(private RequestObject $requestObject){}
+            public function controllersAction($key): array
+            {
+                $controllers = [
+                    "register" => [
+                        "controller" => "controller_result", // $obj->exampleResult()
+                        "template" => "example.twig",
+                        "parameters" => [
+                            "name_of_the_parameter" => "value"
+                        ]
+        
+                    ],
+        
+                ];
+        
+                return $controllers[$key];
+            }
+        
+            public function controllersSelection($key): array
+            {
+                $controllers = [
+                    "register" => [
+                        "controller" => "controller_result", // $obj->exampleResult()
+                        "template" => "example.twig",
+                        "parameters" => [
+                            "name_of_the_parameter" => "value"
+                        ]
+        
+                    ],
+        
+                ];
+        
+                return $controllers[$key];
+            }
+        
+            /* A hidden input will be use in order to know to which methods sent the data*/
+        
+            public function resolveAction(): ?array
+            {
+                if(!empty($this->requestObject->post()["action"])){
+                    return $this->controllersAction($this->requestObject->post()["action"]);
+                }
+            }
+        
+            public function resolveSelection(): ?array
+            {
+                if(!empty($this->requestObject->get()["selection"])){
+                    return $this->controllersSelection($this->requestObject->get()["selection"]);
+                }
+            }
+        }
+        PHP;
+        fwrite($file,$code);
+    }
+
     public function createPublicFolderAndSubFolders()
     {
         mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\" . FolderName::PUBLIC);
@@ -146,6 +217,7 @@ class InitFolderStructure extends Exception
             $this->createIndexFileInPublicFolder();
             $this->createTemplateFolderAndSubFolder();
             $this->createComposerJsonFileInProjectFolder();
+            $this->createRouterFolderAndFiles();
 
             foreach ($arrays as $arr) {
                 foreach ($arr as $parentFolderKey => $subFolder) {
