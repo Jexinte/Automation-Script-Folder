@@ -165,6 +165,54 @@ class InitFolderStructure extends Exception
         fwrite($file,$code);
     }
 
+    public function createUtilFolderAndFiles(){
+     
+        mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\" . FolderName::UTIL);
+        $filename = "RequestObject.php";
+        
+        $file = fopen($this->folderWhereTheProjectIsGonnaBeCreated . "\\" . FolderName::UTIL . "\\$filename", "w");
+
+        $code = <<< 'PHP'
+        <?php
+
+        namespace Util;
+
+        class RequestObject
+        {
+                public function post(): array
+                {
+                        return $_POST;
+                }
+
+                public function get(): array
+                {
+                        return $_GET;
+                }
+
+                public function isDataHaveBeenSent(): ?bool
+                {
+                        if (isset($_POST['action'])) {
+                                return true;
+                        }
+                        return null;
+                }
+                public function aSelectionHasBeenMade(): ?bool
+                {
+                        if (isset($_GET['selection'])) {
+                                return true;
+                        }
+                        return null;
+                }
+
+                public function files(): array
+                {
+                        return $_FILES;
+                }
+        }
+
+        PHP;
+        fwrite($file,$code);
+    }
     public function createPublicFolderAndSubFolders()
     {
         mkdir($this->folderWhereTheProjectIsGonnaBeCreated . "\\" . FolderName::PUBLIC);
@@ -218,6 +266,7 @@ class InitFolderStructure extends Exception
             $this->createTemplateFolderAndSubFolder();
             $this->createComposerJsonFileInProjectFolder();
             $this->createRouterFolderAndFiles();
+            $this->createUtilFolderAndFiles();
 
             foreach ($arrays as $arr) {
                 foreach ($arr as $parentFolderKey => $subFolder) {
