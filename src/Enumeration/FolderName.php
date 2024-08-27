@@ -21,9 +21,9 @@ enum FolderName {
 
     const DIAGRAMS =  [
     "diagrams" => [
-         "UseCases",
-        "Sequences",
-         "Class",
+         "use_cases",
+        "sequences",
+         "class",
     ]
     ];
     
