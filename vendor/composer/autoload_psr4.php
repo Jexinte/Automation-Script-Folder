@@ -6,6 +6,6 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Mamad\\Projets\\' => array($baseDir . '/src'),
+    'Src\\' => array($baseDir . '/src'),
     'Enumeration\\' => array($baseDir . '/src/Enumeration'),
 );

@@ -1,10 +1,14 @@
 <?php
 
+namespace Src;
+
 require __DIR__ . '/../vendor/autoload.php';
+
 
 use Enumeration\FolderName;
 use Enumeration\Message;
 use Enumeration\User;
+use Exception;
 
 class InitFolderStructure extends Exception
 {
@@ -31,12 +35,10 @@ class InitFolderStructure extends Exception
                         case USER::CONFIRM_THE_PROCEDURE:
                             $this->projectName = str_replace(" ", "-", $this->projectName);
                             $this->parentFolderInitializationSucceed = true;
-                            if ($this->parentFolderInitializationSucceed) {
                                 $this->folderWhereTheProjectIsGonnaBeCreated .= $this->projectName;
                                 mkdir($this->folderWhereTheProjectIsGonnaBeCreated);
                                 echo Message::SET_UP_FINISH;
                                 fclose($streamOfUserTypingTheNameOfTheProject);
-                            }
                             break;
 
                         default:
@@ -77,7 +79,7 @@ class InitFolderStructure extends Exception
 
     public function handleBadInputFromInitialisationOfTheFolderStructureBuiltAutomation(): bool|Exception
     {
-        preg_match_all("/[a-z\s]{1,}/", $this->projectName, $matches);
+        preg_match_all("/[a-z\s+]/", $this->projectName, $matches);
         switch (true) {
             case $this->isFolderNameAlreadyExist():
                 throw new Exception(Message::FOLDER_NAME_NOT_AVAILABLE);
@@ -145,7 +147,6 @@ class InitFolderStructure extends Exception
                 return $controllers[$key];
             }
         
-            /* A hidden input will be use in order to know to which methods sent the data*/
         
             public function resolveAction(): ?array
             {
